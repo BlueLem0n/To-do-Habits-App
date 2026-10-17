@@ -1,8 +1,14 @@
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
-class Base(DeclarativeBase):
-    pass
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from db.base import Base
+
+if TYPE_CHECKING:
+    from models.users import UserModel
+
 
 class TaskModel(Base):
     __tablename__ = "tasks"
@@ -14,3 +20,8 @@ class TaskModel(Base):
     is_completed: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
     due_date: Mapped[datetime | None] = mapped_column(nullable=True)
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    owner: Mapped["UserModel"] = relationship(back_populates="tasks")
