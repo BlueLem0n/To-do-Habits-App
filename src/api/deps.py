@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
+from core.roles import UserRoles
 
 from core.security import ALGORITHM, SECRET_KEY
 from db.session import get_db
@@ -32,3 +33,12 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+async def require_admin(current_user: UserModel = Depends(get_current_user)) -> UserModel:
+    if current_user.role != UserRoles.Admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='Недостаточно прав'
+        
+        )
+    return current_user
