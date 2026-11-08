@@ -2,10 +2,9 @@ from pydantic import BaseModel, Field, ConfigDict, field_serializer, EmailStr
 
 
 class UserCreateSchema(BaseModel):
-    id: int
+    username: str 
     email: EmailStr
-    username: str
-    password: str
+    password: str = Field(..., min_length=8, max_length=72)
 
 class GetUserSchema(BaseModel):
     id: int 

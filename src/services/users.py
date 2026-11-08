@@ -14,7 +14,7 @@ class UserService:
 
     async def register(self, data: UserCreateSchema) -> UserModel:
         email = normalize_email(data.email)
-        if await self.repo.get_by_email(email) is None:
+        if await self.repo.get_by_email(email) is not None:
             raise UserAlreadyExistsError
         
         user = UserModel(
