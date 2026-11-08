@@ -3,3 +3,6 @@ class UserAlreadyExistsError(Exception):
 
 class IncorrectEmailOrPass(Exception):
     pass
+
+class HabitNotFoundError(Exception):
+    pass
