@@ -1,9 +1,10 @@
 from fastapi import APIRouter
 
-from api.v1.endpoints import auth, tasks, users, habits
+from api.v1.endpoints import auth, tasks, users, habits, habit_completions
 
 api_router = APIRouter()
 api_router.include_router(auth.router, prefix="/auth", tags=["Auth"])
 api_router.include_router(tasks.router, prefix="/tasks", tags=["Tasks"])
 api_router.include_router(users.router, prefix="/users", tags=["Users"])
 api_router.include_router(habits.router, prefix="/habits", tags=["Habits"])
+api_router.include_router(habit_completions.router, prefix="/habits", tags=["Habit completions"])
