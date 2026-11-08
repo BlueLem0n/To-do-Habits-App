@@ -21,7 +21,5 @@ class TaskModel(Base):
     created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
     due_date: Mapped[datetime | None] = mapped_column(nullable=True)
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     owner: Mapped["UserModel"] = relationship(back_populates="tasks")
