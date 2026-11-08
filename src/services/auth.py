@@ -9,7 +9,7 @@ class AuthService:
         self.repo = repo 
 
     async def authenticate(self, email: str, password: str):
-        user = await self.repo.get_by_email(email)
+        user = await self.repo.get_by_email(normalize_email(email))
         if user is None or not verify_password(password, user.hashed_password):
             raise IncorrectEmailOrPass
         return user
