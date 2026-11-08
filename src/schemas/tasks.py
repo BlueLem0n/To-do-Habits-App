@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict, field_serializer
 from datetime import datetime
 from typing import Optional
+from core.date_serializer import format_datetime
 
 class TaskCreateSchema(BaseModel):
     title: str = Field(..., max_length=200)
@@ -23,8 +24,6 @@ class TaskGetSchema(TaskCreateSchema):
     model_config = ConfigDict(from_attributes=True)
 
     @field_serializer("created_at", "due_date")
-    def serialize_date(self, dt: datetime | None) -> str | None:
-        if dt is None:
-            return None
-        else:
-            return dt.strftime("%d.%m.%Y" "%H:%M")   
+    def serialize_dates(self, dt: datetime | None) -> str | None:
+        return format_datetime(dt)
+    
