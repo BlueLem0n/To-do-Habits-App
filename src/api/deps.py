@@ -4,7 +4,7 @@ import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.roles import UserRoles
 
-from core.security import ALGORITHM, SECRET_KEY
+from core.config import settings
 from db.session import get_db
 from models.users import UserModel
 
@@ -21,7 +21,7 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         user_id_str = payload.get("sub")
         if user_id_str is None:
             raise credentials_exception
@@ -38,7 +38,7 @@ async def require_admin(current_user: UserModel = Depends(get_current_user)) -> 
     if current_user.role != UserRoles.Admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail='Недостаточно прав'
+            detail='У вас недостаточно прав'
         
         )
     return current_user

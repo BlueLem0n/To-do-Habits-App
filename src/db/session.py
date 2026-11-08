@@ -1,10 +1,10 @@
 from fastapi import Depends
 from typing import Annotated, AsyncGenerator
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession, create_async_engine
+from core.config import settings
 
-DATABASE_URL = "sqlite+aiosqlite:///./tasks.db"
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(settings.DATABASE_URL, echo=settings.DB_ECHO)
 
 AsyncSessionLocal = async_sessionmaker(
     bind=engine, 
