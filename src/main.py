@@ -6,13 +6,8 @@ from api.v1.router import api_router
 from db.session import engine
 from models.tasks import Base
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield
 
-app = FastAPI(title="Todo & Pomodoro App", lifespan=lifespan)
+app = FastAPI(title="Todo & Pomodoro App")
 
 
 app.include_router(api_router, prefix="/api/v1")
