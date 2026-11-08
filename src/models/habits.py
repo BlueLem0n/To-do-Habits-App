@@ -8,6 +8,7 @@ from db.base import Base
 
 if TYPE_CHECKING:
     from models.users import UserModel
+    from models.habit_completions import HabitCompletionModel
 
 
 class HabitModel(Base):
@@ -17,11 +18,8 @@ class HabitModel(Base):
     title: Mapped[str] = mapped_column(String(200), nullable=False)
     description: Mapped[str | None] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(default=True)
-    created_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc)
-    )
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    completions: Mapped[list["HabitCompletionModel"]] = relationship(back_populates="habit", cascade="all, delete-orphan")
     owner: Mapped["UserModel"] = relationship(back_populates="habits")
