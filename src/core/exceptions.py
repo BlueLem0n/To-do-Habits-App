@@ -6,3 +6,10 @@ class IncorrectEmailOrPass(Exception):
 
 class HabitNotFoundError(Exception):
     pass
+
+class CompletionAlreadyExistsError(Exception):
+    pass
+
+
+class CompletionNotFoundError(Exception):
+    pass
